@@ -9,7 +9,7 @@
     console.log("🆔 Chat Session ID:", window.chatSessionId)
 
     const WEBHOOK_URL =
-        "https://5c55250bdb3c.ngrok-free.app/webhook/incoming-message"
+        "https://mpwebautomations.app.n8n.cloud/webhook-test/incoming-messages"
 
     // ==============================
     // FLOATING AI BUTTON (WHITE + ORANGE)
@@ -231,3 +231,4 @@
     console.log("✅ AI Chat Widget Loaded")
 })()
 </script>
+
