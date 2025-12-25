@@ -1,5 +1,4 @@
-<script>
-;(function () {
+(function () {
     // UNIQUE CHAT ID - Persistent across sessions
     if (!window.chatSessionId) {
         window.chatSessionId =
@@ -22,8 +21,8 @@
         right: "20px",
         width: "60px",
         height: "60px",
-        background: "#ffffff", // ✅ white background
-        color: "#f97316", // ✅ orange text
+        background: "#ffffff",
+        color: "#f97316",
         borderRadius: "50%",
         display: "flex",
         alignItems: "center",
@@ -33,7 +32,7 @@
         cursor: "pointer",
         zIndex: "100000",
         boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-        border: "3px solid #f97316", // ✅ orange border
+        border: "3px solid #f97316",
         transition: "all 0.3s ease",
     })
 
@@ -204,7 +203,7 @@
             })
 
             const data = await res.json()
-            const reply = data.reply || "Thanks! We’ll get back to you."
+            const reply = data.reply || "Thanks! We'll get back to you."
 
             const aiMsg = document.createElement("div")
             aiMsg.innerHTML = `<strong>AI</strong><div>${reply}</div>`
@@ -229,6 +228,4 @@
     })
 
     console.log("✅ AI Chat Widget Loaded")
-})()
-</script>
-
+})();
