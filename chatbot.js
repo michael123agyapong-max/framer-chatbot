@@ -1,4 +1,4 @@
-(function () {
+;(function () {
     // UNIQUE CHAT ID - Persistent across sessions
     if (!window.chatSessionId) {
         window.chatSessionId =
@@ -11,10 +11,10 @@
         "https://mpwebautomations.app.n8n.cloud/webhook-test/incoming-messages"
 
     // ==============================
-    // FLOATING AI BUTTON (WHITE + ORANGE)
+    // FLOATING AI BUTTON (🤖 ICON)
     // ==============================
     const aiBtn = document.createElement("div")
-    aiBtn.innerHTML = "AI"
+    aiBtn.innerHTML = "🤖" // AI Robot Icon instead of "AI" text
     Object.assign(aiBtn.style, {
         position: "fixed",
         bottom: "20px",
@@ -27,8 +27,7 @@
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "18px",
-        fontWeight: "700",
+        fontSize: "28px", // Larger for icon
         cursor: "pointer",
         zIndex: "100000",
         boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
@@ -74,7 +73,7 @@
     // ==============================
     const header = document.createElement("div")
     header.innerHTML = `
-        <span style="font-weight:600;font-size:16px;">AI Assistant</span>
+        <span style="font-weight:600;font-size:16px;">🤖 AI Assistant</span>
         <button id="closeChat" style="
             background:none;
             border:none;
@@ -112,7 +111,7 @@
             margin-bottom:12px;
             max-width:85%;
         ">
-            <strong>AI</strong>
+            <strong>🤖 AI</strong>
             <div style="margin-top:4px;">
                 Hi 👋 How can I help you today?
             </div>
@@ -171,7 +170,42 @@
     header.querySelector("#closeChat").onclick = toggleChat
 
     // ==============================
-    // SEND MESSAGE
+    // TYPING INDICATOR
+    // ==============================
+    function showTypingIndicator() {
+        const typingMsg = document.createElement("div")
+        typingMsg.id = "typing-indicator"
+        typingMsg.innerHTML = `<strong>🤖 AI</strong><div>Typing<span class="dots">...</span></div>`
+        Object.assign(typingMsg.style, {
+            background: "#f0f2ff",
+            padding: "12px 16px",
+            borderRadius: "18px",
+            marginBottom: "12px",
+            maxWidth: "85%",
+        })
+        messages.appendChild(typingMsg)
+        messages.scrollTop = messages.scrollHeight
+
+        // Animated dots
+        const dots = typingMsg.querySelector(".dots")
+        let dotCount = 0
+        const dotInterval = setInterval(() => {
+            dots.textContent = ".".repeat((dotCount % 3) + 1)
+            dotCount++
+        }, 500)
+
+        return { typingMsg, dotInterval }
+    }
+
+    function removeTypingIndicator(typingRef) {
+        if (typingRef) {
+            clearInterval(typingRef.dotInterval)
+            typingRef.typingMsg.remove()
+        }
+    }
+
+    // ==============================
+    // SEND MESSAGE (WITH TYPING)
     // ==============================
     async function sendMessage() {
         const text = input.value.trim()
@@ -191,6 +225,10 @@
         messages.appendChild(userMsg)
         input.value = ""
 
+        // Show typing indicator
+        const typingRef = showTypingIndicator()
+        messages.scrollTop = messages.scrollHeight
+
         try {
             const res = await fetch(WEBHOOK_URL, {
                 method: "POST",
@@ -205,8 +243,11 @@
             const data = await res.json()
             const reply = data.reply || "Thanks! We'll get back to you."
 
+            // Remove typing indicator and show reply
+            removeTypingIndicator(typingRef)
+
             const aiMsg = document.createElement("div")
-            aiMsg.innerHTML = `<strong>AI</strong><div>${reply}</div>`
+            aiMsg.innerHTML = `<strong>🤖 AI</strong><div>${reply}</div>`
             Object.assign(aiMsg.style, {
                 background: "#f0f2ff",
                 padding: "12px 16px",
@@ -216,6 +257,8 @@
             })
             messages.appendChild(aiMsg)
         } catch (err) {
+            // Remove typing on error
+            removeTypingIndicator(typingRef)
             alert("Error sending message")
         }
 
@@ -227,5 +270,5 @@
         if (e.key === "Enter") sendMessage()
     })
 
-    console.log("✅ AI Chat Widget Loaded")
-})();
+    console.log("✅ AI Chat Widget Loaded (🤖 + Typing)")
+})()
