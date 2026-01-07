@@ -8,7 +8,7 @@
     console.log("🆔 Chat Session ID:", window.chatSessionId)
 
     const WEBHOOK_URL =
-        "https://mpwebautomations.app.n8n.cloud/webhook-test/incoming-messages"
+        "https://maflink.app.n8n.cloud/webhook-test/website"
 
     // ==============================
     // FLOATING AI BUTTON (🤖 ICON)
@@ -271,4 +271,5 @@
     })
 
     console.log("✅ AI Chat Widget Loaded (🤖 + Typing)")
+
 })()
